@@ -7,28 +7,7 @@
 
 import SwiftUI
 import CoreData
-enum Priority: String, Identifiable, CaseIterable {
-    var id: UUID {
-        return UUID()
-    }
-    
-    case low = "Low"
-    case medium = "Medium"
-    case high = "High"
-}
 
-extension Priority {
-    var title: String {
-        switch self {
-        case .low:
-            return "Low"
-        case .high:
-            return "High"
-        case .medium:
-            return "Medium"
-        }
-    }
-}
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @FetchRequest(entity: TaskEntity.entity(),
@@ -68,19 +47,11 @@ struct ContentView: View {
         NavigationView {
             ZStack(alignment: .bottomTrailing) {
                 if allTasks.isEmpty {
-                    VStack {
-                        Image(systemName: "list.bullet")
+                    ZStack {
+                        Image("Image")
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 100, height: 100)
-                            .foregroundColor(.gray)
-                        Text("Empty list!")
-                            .font(.headline)
-                            .foregroundColor(.gray)
-                        Text("Click the button to add something exciting!")
-                            .font(.subheadline)
-                            .foregroundColor(.gray)
-                    }
+                        }
                 } else {
                     List {
                         ForEach(allTasks) { task in
@@ -91,7 +62,7 @@ struct ContentView: View {
                                 Text(task.title ?? "")
                             }
                         }
-                        .onDelete(perform: deleteTask) 
+                        .onDelete(perform: deleteTask)
                     }
                 }
                 
@@ -117,6 +88,6 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
-        .environment(\.managedObjectContext, CoreDataManager.shared.viewContext)
+        .environment(\.managedObjectContext, CoreDataManager.shared.persistentContainer.viewContext)
             
 }
